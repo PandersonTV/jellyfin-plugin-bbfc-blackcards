@@ -36,7 +36,7 @@ namespace Jellyfin.Plugin.BBFCBlackCards
                 new PluginPageInfo
                 {
                     Name = this.Name,
-                    EmbeddedResourcePath = string.Format("{0}.Configuration.configPage.html", GetType().Namespace)
+                    EmbeddedResourcePath = "Jellyfin.Plugin.BBFCBlackCards.configPage.html"
                 }
             };
         }
