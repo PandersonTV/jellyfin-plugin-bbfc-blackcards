@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Jellyfin.Plugin.BBFCBlackCards</RootNamespace>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="configPage.html">
+      <LogicalName>Jellyfin.Plugin.BBFCBlackCards.configPage.html</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+  <EmbeddedResource Include="configPage.html">
+    <LogicalName>Jellyfin.Plugin.BBFCBlackCards.configPage.html</LogicalName>
+  </EmbeddedResource>
+  <EmbeddedResource Include="thumb.png">
+    <LogicalName>Jellyfin.Plugin.BBFCBlackCards.thumb.png</LogicalName>
+  </EmbeddedResource>
+</ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MediaBrowser.Model">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Model.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Common">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Common.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="MediaBrowser.Controller">
+      <HintPath>C:\Program Files\Jellyfin\Server\MediaBrowser.Controller.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Jellyfin.Data">
+      <HintPath>C:\Program Files\Jellyfin\Server\Jellyfin.Data.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
+      <HintPath>C:\Program Files\Jellyfin\Server\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

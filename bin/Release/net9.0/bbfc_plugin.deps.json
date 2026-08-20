@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "bbfc_plugin/1.0.0": {
+        "runtime": {
+          "bbfc_plugin.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "bbfc_plugin/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
