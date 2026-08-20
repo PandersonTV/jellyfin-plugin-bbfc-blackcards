@@ -21,7 +21,12 @@ namespace Jellyfin.Plugin.BBFCBlackCards
             : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
-            PluginFolder = Path.Combine(applicationPaths.PluginsPath, "BBFCBlackCards");
+
+            // Dynamically resolve where the DLL actually sits on disk (supports versioned repository extraction)
+            var assemblyLocation = GetType().Assembly.Location;
+            PluginFolder = !string.IsNullOrEmpty(assemblyLocation) 
+                ? Path.GetDirectoryName(assemblyLocation)! 
+                : Path.Combine(applicationPaths.PluginsPath, "BBFCBlackCards");
         }
 
         public IEnumerable<PluginPageInfo> GetPages()
@@ -31,7 +36,7 @@ namespace Jellyfin.Plugin.BBFCBlackCards
                 new PluginPageInfo
                 {
                     Name = "bbfcblackcards",
-                    EmbeddedResourcePath = "Jellyfin.Plugin.BBFCBlackCards.configPage.html"
+                    EmbeddedResourcePath = GetType().Namespace + ".configPage.html"
                 }
             };
         }

@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="configPage.html">
+    <EmbeddedResource Include="configPage.html">
       <LogicalName>Jellyfin.Plugin.BBFCBlackCards.configPage.html</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
