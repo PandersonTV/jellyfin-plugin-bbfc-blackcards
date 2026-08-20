@@ -12,7 +12,7 @@
         "version": "1.0.0.0",
         "changelog": "Initial public release.",
         "targetAbi": "10.11.0.0",
-        "sourceUrl": "https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases/download/v1.0.0.0/jellyfin-plugin-bbfc-1.0.0.0.zip",
+        "sourceUrl": "https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases/download/v1.0.0-alpha/jellyfin-plugin-bbfc-1.0.0.0.zip",
         "checksum": "1f8de83260f5a29f54ab7dfda019151a",
         "timestamp": "2026-08-20T18:05:00Z"
       }
