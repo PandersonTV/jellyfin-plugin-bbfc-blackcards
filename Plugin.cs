@@ -3,13 +3,12 @@ using System.IO;
 using System.Collections.Generic;
 using MediaBrowser.Common.Configuration;
 using MediaBrowser.Common.Plugins;
-using MediaBrowser.Model.Drawing;
 using MediaBrowser.Model.Plugins;
 using MediaBrowser.Model.Serialization;
 
 namespace Jellyfin.Plugin.BBFCBlackCards
 {
-    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages, IHasThumbImage
+    public class Plugin : BasePlugin<PluginConfiguration>, IHasWebPages
     {
         public override string Name => "BBFC Black Card Generator";
         public override Guid Id => Guid.Parse("f6e8b0d2-9d32-4d64-8842-1e9a26369c5e");
@@ -32,19 +31,9 @@ namespace Jellyfin.Plugin.BBFCBlackCards
                 new PluginPageInfo
                 {
                     Name = "bbfcblackcards",
-                    EmbeddedResourcePath = GetType().Namespace + ".configPage.html"
+                    EmbeddedResourcePath = "Jellyfin.Plugin.BBFCBlackCards.configPage.html"
                 }
             };
         }
-
-        // --- Plugin Cover/Thumbnail Support ---
-        public Stream GetThumbImage()
-        {
-            var type = GetType();
-            return type.Assembly.GetManifestResourceStream(type.Namespace + ".thumb.png")
-                   ?? Stream.Null;
-        }
-
-        public ImageFormat ThumbImageFormat => ImageFormat.Png;
     }
 }

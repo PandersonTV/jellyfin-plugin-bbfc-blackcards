@@ -30,7 +30,7 @@ namespace Jellyfin.Plugin.BBFCBlackCards
             ["PG"] = new RatingConfig { TemplateFileName = "blackcard_pg.png", AdviceColor = "#F1C40F" },
             ["12A"] = new RatingConfig { TemplateFileName = "blackcard_12a.png", AdviceColor = "#E67E22" },
             ["12"] = new RatingConfig { TemplateFileName = "blackcard_12a.png", AdviceColor = "#E67E22" },
-            ["15"] = new RatingConfig { TemplateFileName = "blackcard_15.png", AdviceColor = "yellow" },
+            ["15"] = new RatingConfig { TemplateFileName = "blackcard_15.png", AdviceColor = "#eb5791" },
             ["18"] = new RatingConfig { TemplateFileName = "blackcard_18.png", AdviceColor = "#E74C3C" },
             ["UNRATED"] = new RatingConfig { TemplateFileName = "blackcard_15.png", AdviceColor = "white" }
         };

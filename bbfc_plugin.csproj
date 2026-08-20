@@ -9,19 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="configPage.html">
+    <EmbeddedResource Update="configPage.html">
       <LogicalName>Jellyfin.Plugin.BBFCBlackCards.configPage.html</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
-
-  <ItemGroup>
-  <EmbeddedResource Include="configPage.html">
-    <LogicalName>Jellyfin.Plugin.BBFCBlackCards.configPage.html</LogicalName>
-  </EmbeddedResource>
-  <EmbeddedResource Include="thumb.png">
-    <LogicalName>Jellyfin.Plugin.BBFCBlackCards.thumb.png</LogicalName>
-  </EmbeddedResource>
-</ItemGroup>
 
   <ItemGroup>
     <Reference Include="MediaBrowser.Model">
