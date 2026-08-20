@@ -1,4 +1,4 @@
-# BBFC Black Card Generator v1.2.0.0
+# BBFC Black Card Generator v1.2.1.0
 
 Initial alpha release of the **BBFC Black Card Generator** plugin for Jellyfin. This plugin automatically scans your movie library and uses FFmpeg to generate authentic 5-second British Board of Film Classification (BBFC) title cards directly inside movie `extras/` folders.
 
