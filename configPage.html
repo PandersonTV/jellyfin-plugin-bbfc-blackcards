@@ -1,64 +1,315 @@
-<div id="BBFCConfigurationPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-checkbox">
-    <div data-role="content">
-        <div class="content-primary">
-            <form id="BBFCConfigForm">
-                <div class="sectionTitleContainer flex align-items-center">
-                    <h2 class="sectionTitle">BBFC Black Card Generator</h2>
-                </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BBFC Black Card Generator</title>
+</head>
+<body>
+    <div id="BBFCConfigurationPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button,emby-checkbox,emby-select">
+        <div data-role="content">
+            <div class="content-primary">
+                <form id="BBFCConfigurationForm">
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h2 class="sectionTitle">BBFC Black Card & Cinema Preroll Settings</h2>
+                    </div>
 
-                <div class="inputContainer">
-                    <label class="inputLabel inputLabelUnfocused" for="FfmpegPath">FFmpeg Executable Path</label>
-                    <input id="FfmpegPath" name="FfmpegPath" type="text" is="emby-input" class="emby-input" />
-                    <div class="fieldDescription">Path to ffmpeg (e.g. <code>C:\Program Files\Jellyfin\Server\ffmpeg.exe</code>).</div>
-                </div>
+                    <!-- Generator Settings -->
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="txtFfmpegPath">Custom FFmpeg Path</label>
+                        <input is="emby-input" type="text" id="txtFfmpegPath" name="txtFfmpegPath" placeholder="ffmpeg" />
+                        <div class="fieldDescription">Leave as 'ffmpeg' if accessible in server system PATH.</div>
+                    </div>
 
-                <div class="checkboxContainer checkboxContainer-withDescription">
-                    <label>
-                        <input id="OverwriteExisting" name="OverwriteExisting" type="checkbox" is="emby-checkbox" />
-                        <span>Overwrite existing black cards</span>
-                    </label>
-                    <div class="fieldDescription checkboxFieldDescription">If enabled, existing <code>blackcard.mp4</code> files in movie extras folders will be regenerated.</div>
-                </div>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkOverwrite" name="chkOverwrite" />
+                            <span>Overwrite existing title cards</span>
+                        </label>
+                        <div class="fieldDescription">Re-renders title cards even if blackcard.mp4 exists in extras.</div>
+                    </div>
 
-                <div>
-                    <button is="emby-button" type="submit" class="raised button-submit block emby-button">
-                        <span>Save</span>
-                    </button>
-                </div>
-            </form>
+                    <div class="checkboxContainer checkboxContainer-withDescription">
+                        <label>
+                            <input is="emby-checkbox" type="checkbox" id="chkEnableBlackCard" name="chkEnableBlackCard" />
+                            <span>Play BBFC Black Card directly before movie</span>
+                        </label>
+                        <div class="fieldDescription">Plays the movie-specific rating card as the final intro before the feature.</div>
+                    </div>
+
+                    <hr style="margin: 2em 0; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.1);" />
+
+                    <!-- 5 Preroll Slots -->
+                    <div class="sectionTitleContainer flex align-items-center">
+                        <h3 class="sectionTitle">Cinema Mode Preroll Sequence (Plays 1 to 5)</h3>
+                    </div>
+                    <p class="fieldDescription" style="margin-bottom: 1.5em;">
+                        Assign libraries and choose smart metadata matching (e.g., match Atmos/DTS bumpers to the movie soundtrack, or match trailer genres).
+                    </p>
+
+                    <!-- Slot 1 -->
+                    <div class="verticalSection" style="margin-bottom: 1.5em; padding: 1.2em; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkSlot1" />
+                                <span>Enable Slot 1 (e.g. Cinema / Audio Idents)</span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 1em; flex-wrap: wrap; margin-top: 0.8em;">
+                            <div class="selectContainer" style="flex: 2; min-width: 200px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot1">Library</label>
+                                <select is="emby-select" id="selectSlot1" class="librarySelect"></select>
+                            </div>
+                            <div class="selectContainer" style="flex: 1.5; min-width: 160px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot1Match">Smart Match</label>
+                                <select is="emby-select" id="selectSlot1Match">
+                                    <option value="None">Random (No Match)</option>
+                                    <option value="AudioCodec">Audio Codec (Atmos / DTS / Dolby)</option>
+                                    <option value="Genre">Movie Genre</option>
+                                    <option value="Rating">Age Rating (BBFC / MPAA)</option>
+                                </select>
+                            </div>
+                            <div class="inputContainer" style="flex: 0.8; min-width: 100px;">
+                                <label class="inputLabel inputLabelUnfocused" for="txtSlot1Count">Count</label>
+                                <input is="emby-input" type="number" min="1" max="10" id="txtSlot1Count" value="1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot 2 -->
+                    <div class="verticalSection" style="margin-bottom: 1.5em; padding: 1.2em; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkSlot2" />
+                                <span>Enable Slot 2 (e.g. Trailers)</span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 1em; flex-wrap: wrap; margin-top: 0.8em;">
+                            <div class="selectContainer" style="flex: 2; min-width: 200px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot2">Library</label>
+                                <select is="emby-select" id="selectSlot2" class="librarySelect"></select>
+                            </div>
+                            <div class="selectContainer" style="flex: 1.5; min-width: 160px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot2Match">Smart Match</label>
+                                <select is="emby-select" id="selectSlot2Match">
+                                    <option value="None">Random (No Match)</option>
+                                    <option value="Genre">Movie Genre</option>
+                                    <option value="AudioCodec">Audio Codec</option>
+                                    <option value="Rating">Age Rating (BBFC / MPAA)</option>
+                                </select>
+                            </div>
+                            <div class="inputContainer" style="flex: 0.8; min-width: 100px;">
+                                <label class="inputLabel inputLabelUnfocused" for="txtSlot2Count">Count</label>
+                                <input is="emby-input" type="number" min="1" max="10" id="txtSlot2Count" value="2" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot 3 -->
+                    <div class="verticalSection" style="margin-bottom: 1.5em; padding: 1.2em; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkSlot3" />
+                                <span>Enable Slot 3 (e.g. Policy / Silence Phones)</span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 1em; flex-wrap: wrap; margin-top: 0.8em;">
+                            <div class="selectContainer" style="flex: 2; min-width: 200px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot3">Library</label>
+                                <select is="emby-select" id="selectSlot3" class="librarySelect"></select>
+                            </div>
+                            <div class="selectContainer" style="flex: 1.5; min-width: 160px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot3Match">Smart Match</label>
+                                <select is="emby-select" id="selectSlot3Match">
+                                    <option value="None">Random (No Match)</option>
+                                    <option value="Genre">Movie Genre</option>
+                                    <option value="AudioCodec">Audio Codec</option>
+                                    <option value="Rating">Age Rating</option>
+                                </select>
+                            </div>
+                            <div class="inputContainer" style="flex: 0.8; min-width: 100px;">
+                                <label class="inputLabel inputLabelUnfocused" for="txtSlot3Count">Count</label>
+                                <input is="emby-input" type="number" min="1" max="10" id="txtSlot3Count" value="1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot 4 -->
+                    <div class="verticalSection" style="margin-bottom: 1.5em; padding: 1.2em; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkSlot4" />
+                                <span>Enable Slot 4 (e.g. Feature Presentation)</span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 1em; flex-wrap: wrap; margin-top: 0.8em;">
+                            <div class="selectContainer" style="flex: 2; min-width: 200px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot4">Library</label>
+                                <select is="emby-select" id="selectSlot4" class="librarySelect"></select>
+                            </div>
+                            <div class="selectContainer" style="flex: 1.5; min-width: 160px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot4Match">Smart Match</label>
+                                <select is="emby-select" id="selectSlot4Match">
+                                    <option value="None">Random (No Match)</option>
+                                    <option value="AudioCodec">Audio Codec</option>
+                                    <option value="Genre">Movie Genre</option>
+                                    <option value="Rating">Age Rating</option>
+                                </select>
+                            </div>
+                            <div class="inputContainer" style="flex: 0.8; min-width: 100px;">
+                                <label class="inputLabel inputLabelUnfocused" for="txtSlot4Count">Count</label>
+                                <input is="emby-input" type="number" min="1" max="10" id="txtSlot4Count" value="1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slot 5 -->
+                    <div class="verticalSection" style="margin-bottom: 1.5em; padding: 1.2em; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+                        <div class="checkboxContainer">
+                            <label>
+                                <input is="emby-checkbox" type="checkbox" id="chkSlot5" />
+                                <span>Enable Slot 5 (e.g. Countdown / Custom Intro)</span>
+                            </label>
+                        </div>
+                        <div style="display: flex; gap: 1em; flex-wrap: wrap; margin-top: 0.8em;">
+                            <div class="selectContainer" style="flex: 2; min-width: 200px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot5">Library</label>
+                                <select is="emby-select" id="selectSlot5" class="librarySelect"></select>
+                            </div>
+                            <div class="selectContainer" style="flex: 1.5; min-width: 160px;">
+                                <label class="selectLabel inputLabelUnfocused" for="selectSlot5Match">Smart Match</label>
+                                <select is="emby-select" id="selectSlot5Match">
+                                    <option value="None">Random (No Match)</option>
+                                    <option value="AudioCodec">Audio Codec</option>
+                                    <option value="Genre">Movie Genre</option>
+                                    <option value="Rating">Age Rating</option>
+                                </select>
+                            </div>
+                            <div class="inputContainer" style="flex: 0.8; min-width: 100px;">
+                                <label class="inputLabel inputLabelUnfocused" for="txtSlot5Count">Count</label>
+                                <input is="emby-input" type="number" min="1" max="10" id="txtSlot5Count" value="1" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 2em;">
+                        <button is="emby-button" type="submit" class="raised button-submit block">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <script type="text/javascript">
-        var BBFCConfig = {
-            pluginUniqueId: 'f6e8b0d2-9d32-4d64-8842-1e9a26369c5e'
-        };
+        <script type="text/javascript">
+            var pluginId = "f6e8b0d2-9d32-4d64-8842-1e9a26369c5e";
 
-        $('#BBFCConfigurationPage').on('pageshow', function () {
-            var page = this;
-            Dashboard.showLoadingMsg();
+            function populateLibraryDropdowns(libraries, page, config) {
+                var selects = ['#selectSlot1', '#selectSlot2', '#selectSlot3', '#selectSlot4', '#selectSlot5'];
+                var configValues = [
+                    config.Slot1LibraryId,
+                    config.Slot2LibraryId,
+                    config.Slot3LibraryId,
+                    config.Slot4LibraryId,
+                    config.Slot5LibraryId
+                ];
 
-            ApiClient.getPluginConfiguration(BBFCConfig.pluginUniqueId).then(function (config) {
-                $('#FfmpegPath', page).val(config.FfmpegPath || '');
-                $('#OverwriteExisting', page).prop('checked', config.OverwriteExisting || false);
-                Dashboard.hideLoadingMsg();
-            });
-        });
+                selects.forEach(function (selectId, index) {
+                    var $select = $(selectId, page);
+                    $select.empty();
+                    $select.append('<option value="00000000-0000-0000-0000-000000000000">-- None Selected --</option>');
 
-        $('#BBFCConfigForm').on('submit', function () {
-            Dashboard.showLoadingMsg();
-            var page = $(this).parents('#BBFCConfigurationPage')[0];
+                    libraries.forEach(function (lib) {
+                        var isSelected = (configValues[index] && configValues[index].toLowerCase() === lib.Id.toLowerCase());
+                        $select.append('<option value="' + lib.Id + '"' + (isSelected ? ' selected' : '') + '>' + lib.Name + '</option>');
+                    });
+                });
+            }
 
-            ApiClient.getPluginConfiguration(BBFCConfig.pluginUniqueId).then(function (config) {
-                config.FfmpegPath = $('#FfmpegPath', page).val();
-                config.OverwriteExisting = $('#OverwriteExisting', page).prop('checked');
+            $('#BBFCConfigurationPage').on('pageshow', function () {
+                var page = this;
+                Dashboard.showLoadingMsg();
 
-                ApiClient.updatePluginConfiguration(BBFCConfig.pluginUniqueId, config).then(function (result) {
-                    Dashboard.processPluginConfigurationUpdateResult(result);
+                Promise.all([
+                    ApiClient.getPluginConfiguration(pluginId),
+                    ApiClient.getVirtualFolders()
+                ]).then(function (responses) {
+                    var config = responses[0];
+                    var virtualFolders = responses[1];
+
+                    var libraries = virtualFolders.map(function (vf) {
+                        return { Id: vf.ItemId, Name: vf.Name };
+                    });
+
+                    populateLibraryDropdowns(libraries, page, config);
+
+                    $('#txtFfmpegPath', page).val(config.FfmpegPath || "ffmpeg");
+                    $('#chkOverwrite', page).prop('checked', config.OverwriteExisting || false);
+                    $('#chkEnableBlackCard', page).prop('checked', config.EnableBlackCardIntro ?? true);
+
+                    $('#chkSlot1', page).prop('checked', config.Slot1Enabled || false);
+                    $('#selectSlot1Match', page).val(config.Slot1MatchMode || "AudioCodec");
+                    $('#txtSlot1Count', page).val(config.Slot1Count || 1);
+
+                    $('#chkSlot2', page).prop('checked', config.Slot2Enabled || false);
+                    $('#selectSlot2Match', page).val(config.Slot2MatchMode || "Genre");
+                    $('#txtSlot2Count', page).val(config.Slot2Count || 2);
+
+                    $('#chkSlot3', page).prop('checked', config.Slot3Enabled || false);
+                    $('#selectSlot3Match', page).val(config.Slot3MatchMode || "None");
+                    $('#txtSlot3Count', page).val(config.Slot3Count || 1);
+
+                    $('#chkSlot4', page).prop('checked', config.Slot4Enabled || false);
+                    $('#selectSlot4Match', page).val(config.Slot4MatchMode || "None");
+                    $('#txtSlot4Count', page).val(config.Slot4Count || 1);
+
+                    $('#chkSlot5', page).prop('checked', config.Slot5Enabled || false);
+                    $('#selectSlot5Match', page).val(config.Slot5MatchMode || "None");
+                    $('#txtSlot5Count', page).val(config.Slot5Count || 1);
+
+                    Dashboard.hideLoadingMsg();
                 });
             });
 
-            return false;
-        });
-    </script>
-</div>
+            $('#BBFCConfigurationForm').on('submit', function (e) {
+                e.preventDefault();
+                Dashboard.showLoadingMsg();
+                var page = $(this).parents('#BBFCConfigurationPage')[0];
+
+                ApiClient.getPluginConfiguration(pluginId).then(function (config) {
+                    config.FfmpegPath = $('#txtFfmpegPath', page).val();
+                    config.OverwriteExisting = $('#chkOverwrite', page).prop('checked');
+                    config.EnableBlackCardIntro = $('#chkEnableBlackCard', page).prop('checked');
+
+                    config.Slot1Enabled = $('#chkSlot1', page).prop('checked');
+                    config.Slot1LibraryId = $('#selectSlot1', page).val();
+                    config.Slot1MatchMode = $('#selectSlot1Match', page).val();
+                    config.Slot1Count = parseInt($('#txtSlot1Count', page).val(), 10) || 1;
+
+                    config.Slot2Enabled = $('#chkSlot2', page).prop('checked');
+                    config.Slot2LibraryId = $('#selectSlot2', page).val();
+                    config.Slot2MatchMode = $('#selectSlot2Match', page).val();
+                    config.Slot2Count = parseInt($('#txtSlot2Count', page).val(), 10) || 1;
+
+                    config.Slot3Enabled = $('#chkSlot3', page).prop('checked');
+                    config.Slot3LibraryId = $('#selectSlot3', page).val();
+                    config.Slot3MatchMode = $('#selectSlot3Match', page).val();
+                    config.Slot3Count = parseInt($('#txtSlot3Count', page).val(), 10) || 1;
+
+                    config.Slot4Enabled = $('#chkSlot4', page).prop('checked');
+                    config.Slot4LibraryId = $('#selectSlot4', page).val();
+                    config.Slot4MatchMode = $('#selectSlot4Match', page).val();
+                    config.Slot4Count = parseInt($('#txtSlot4Count', page).val(), 10) || 1;
+
+                    config.Slot5Enabled = $('#chkSlot5', page).prop('checked');
+                    config.Slot5LibraryId = $('#selectSlot5', page).val();
+                    config.Slot5MatchMode = $('#selectSlot5Match', page).val();
+                    config.Slot5Count = parseInt($('#txtSlot5Count', page).val(), 10) || 1;
+
+                    ApiClient.updatePluginConfiguration(pluginId, config).then(function (result) {
+                        Dashboard.processPluginConfigurationUpdateResult(result);
+                    });
+                });
+                return false;
+            });
+        </script>
+    </div>
+</body>
+</html>
