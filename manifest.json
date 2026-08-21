@@ -9,12 +9,12 @@
     "imageUrl": "https://raw.githubusercontent.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/main/assets/thumb.png",
     "versions": [
       {
-        "version": "1.2.2.0",
+        "version": "1.2.3.0",
         "changelog": "Initial public release.",
-        "targetAbi": "10.9.0.0",
-        "sourceUrl": "https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases/download/v1.2.2.0/bbfc_plugin_1.2.2.0.zip",
-        "checksum": "79250cfd71a3f6d767e04d292b172bfe",
-        "timestamp": "2026-08-21T01:15:00Z"
+        "targetAbi": "10.11.0.0",
+        "sourceUrl": "https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases/download/v1.2.3.0/bbfc_plugin_1.2.3.0.zip",
+        "checksum": "7140956AC7E9C47E036EF203AEDE3C0D",
+        "timestamp": "2026-08-21T15:42:00Z"
       }
     ]
   }
