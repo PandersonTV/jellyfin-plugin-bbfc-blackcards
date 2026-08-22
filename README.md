@@ -1,35 +1,67 @@
-# BBFC Black Card Generator v1.2.0.0
+# BBFC Black Cards & Cinema Intro Provider for Jellyfin
 
-Initial alpha release of the **BBFC Black Card Generator** plugin for Jellyfin. This plugin automatically scans your movie library and uses FFmpeg to generate authentic 5-second British Board of Film Classification (BBFC) title cards directly inside movie `extras/` folders.
+[![Jellyfin Version](https://img.shields.io/badge/Jellyfin-10.11.x-purple.svg)](https://jellyfin.org/)
+[![Latest Release](https://img.shields.io/github/v/release/PandersonTV/jellyfin-plugin-bbfc-blackcards?color=blue)](https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-### ✨ Features
-* **Authentic BBFC Templates:** Full template support for official UK classifications: `U`, `PG`, `12A / 12`, `15`, and `18`.
-* **Dynamic Typography:** Automatically calculates font scaling, multi-line wrapping, and bottom-anchored positioning for movie titles and BBFC advisory advice.
-* **Scheduled Task Integration:** Runs on demand or on a set schedule via Jellyfin's **Scheduled Tasks** menu.
-* **In-Dashboard Configuration:** Dedicated web UI to set custom FFmpeg paths and toggle file overwrite options.
-* **Non-Destructive Extras Placement:** Safely creates `blackcard.mp4` inside existing `extras/` folders without modifying other featurettes.
+A Jellyfin plugin that recreates the authentic British cinema pre-roll experience. Automatically plays BBFC title/rating cards before feature films and powers a fully customisable, multi-slot pre-show sequence.
 
 ---
 
-### 📦 Installation
+## 🎬 Key Features
 
-#### Method 1: Jellyfin Plugin Repository (Recommended)
-1. In Jellyfin, go to **Dashboard** $\rightarrow$ **Plugins** $\rightarrow$ **Repositories**.
-2. Add a new repository:
-   * **Name:** `BBFC Black Cards`
-   * **URL:** `https://raw.githubusercontent.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/main/manifest.json`
-3. Go to the **Catalog** tab, find **BBFC Black Card Generator**, and click **Install**.
-4. Restart your Jellyfin server.
-
-#### Method 2: Manual Installation
-1. Download `jellyfin-plugin-bbfc-1.0.0.0.zip` from the assets below.
-2. Extract the contents into your Jellyfin plugins directory:
-   * Windows: `C:\ProgramData\Jellyfin\Server\plugins\BBFCBlackCards\`
-   * Linux: `/var/lib/jellyfin/plugins/BBFCBlackCards/`
-3. Restart your Jellyfin server.
+* **BBFC Black Card Injection:** Automatically queues matching BBFC classification cards (e.g., `extras/blackcard.mp4`) directly before the main feature starts.
+* **5-Slot Pre-Roll Sequence Engine:** Build a custom theatre sequence with up to five distinct slots (e.g., *Coming Soon Bumpers → Trailers → Audio Idents → Age Advice → Feature Presentation*).
+* **Dynamic Metadata Matching:**
+  * **Audio Codec:** Matches bumpers to the movie's primary track (Dolby Atmos, DTS:X, DTS-HD, TrueHD, Surround).
+  * **Genre Match:** Filters trailers or clips to match the movie currently playing.
+  * **Age Rating:** Serves rating bumpers corresponding to official BBFC classifications (U, PG, 12A/12, 15, 18).
+* **Native Jellyfin 10.11.x Support:** Built on modern asynchronous provider pipelines (`Task<IEnumerable<IntroInfo>>`).
+* **Web UI Dashboard:** Manage slot orders, library targets, and playback rules directly inside Jellyfin Admin Settings.
 
 ---
 
-### ⚠️ Alpha Notice
-* Ensure **FFmpeg** is installed and accessible to your Jellyfin server.
-* If movie folders are read-only, ensure Jellyfin has write permissions to create the `extras/` directory.
+## 📦 Installation
+
+### Option 1: Via Jellyfin Plugin Repository (Recommended)
+
+1. In your Jellyfin web interface, open **Dashboard** $\rightarrow$ **Plugins** $\rightarrow$ **Repositories**.
+2. Click **+ (Add)** and configure the manifest URL:
+   * **Repository Name:** `BBFC Black Cards Repository`
+   * **Repository URL:**
+     ```text
+     [https://raw.githubusercontent.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/main/manifest.json](https://raw.githubusercontent.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/main/manifest.json)
+     ```
+3. Navigate to the **Catalog** tab.
+4. Locate **BBFC Black Cards**, click **Install**, and select the latest stable release (`v1.2.3.0`).
+5. Restart your Jellyfin server.
+
+---
+
+### Option 2: Manual DLL Installation
+
+1. Download `bbfc_plugin_1.2.3.0.zip` from the [Latest Release](https://github.com/PandersonTV/jellyfin-plugin-bbfc-blackcards/releases).
+2. Extract `bbfc_plugin.dll`.
+3. Create a folder in your Jellyfin plugins directory:
+   * **Windows:** `C:\ProgramData\Jellyfin\Server\plugins\BBFCBlackCards_1.2.3.0\`
+   * **Linux / Docker:** `/config/plugins/BBFCBlackCards_1.2.3.0/`
+4. Copy `bbfc_plugin.dll` into that directory and restart Jellyfin.
+
+---
+
+## ⚙️ Configuration
+
+1. In Jellyfin, navigate to **Dashboard** $\rightarrow$ **Plugins** $\rightarrow$ **BBFC Black Cards**.
+2. **Enable BBFC Black Cards:** Toggles the injection of `blackcard.mp4` found inside your movie's `extras/` folder.
+3. **Configure Pre-Roll Slots (1 to 5):**
+   * **Enable Slot:** Turn specific sequence steps on or off.
+   * **Target Library:** Select the Jellyfin library containing your bumpers, idents, or trailers.
+   * **Item Count:** Set how many clips should play in this slot.
+   * **Matching Mode:** Choose between `Random`, `Genre`, `Audio Codec`, or `Rating`.
+
+---
+
+## 🛠️ Building from Source
+
+**Prerequisites:** [.NET 9.0 SDK](https://dotnet.microsoft.com/download)
+
